@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyAssistantForm));
             this.PlayAndPuaseButton = new System.Windows.Forms.Button();
             this.StopButton = new System.Windows.Forms.Button();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // PlayAndPuaseButton
@@ -60,6 +63,12 @@
             this.StopButton.UseVisualStyleBackColor = false;
             this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "My Assistant";
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
+            // 
             // MyAssistantForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -69,11 +78,13 @@
             this.Controls.Add(this.StopButton);
             this.Controls.Add(this.PlayAndPuaseButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MyAssistantForm";
-            this.ShowIcon = false;
             this.Text = "My Assistant";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.MyAssistantForm_Load);
+            this.SizeChanged += new System.EventHandler(this.MyAssistantForm_SizeChanged);
             this.ResumeLayout(false);
 
         }
@@ -81,5 +92,6 @@
         #endregion
         private Button PlayAndPuaseButton;
         private Button StopButton;
+        private NotifyIcon notifyIcon;
     }
 }

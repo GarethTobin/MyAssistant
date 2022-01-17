@@ -40,7 +40,47 @@ namespace MyAssistant
             speechSynthesizer.SpeakCompleted += completed_SpeakCompleted;
             speechSynthesizer.SpeakStarted += Start_SpeakStarted;
 
+            notifyIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
+            notifyIcon.ContextMenuStrip.Items.Add("Close", null, OnCloseClick);
+            notifyIcon.ContextMenuStrip.Items.Add("Open", null, OnOpenClick);
         }
+
+
+        // NotifyIcon and Tray controls
+        private void OnCloseClick(object? sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void OnOpenClick(object? sender, EventArgs e)
+        {
+            OpenFromTray();
+        }
+
+        private void MyAssistantForm_SizeChanged(object sender, EventArgs e)
+        {
+            //if the form is minimized  
+            //hide it from the task bar  
+            //and show the system tray icon (represented by the NotifyIcon control)  
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+                notifyIcon.Visible = true;
+            }
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            OpenFromTray();
+        }
+
+        private void OpenFromTray()
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+            notifyIcon.Visible = false;
+        }
+
 
         // Form Button Functions 
         private void PlayAndPuaseButton_Click(object sender, EventArgs e)
@@ -52,6 +92,7 @@ namespace MyAssistant
         {
             SpeechStop();
         }
+
 
         // Speech Synthesizer
         private void SpeechPlayAndPuase()
@@ -102,6 +143,7 @@ namespace MyAssistant
             PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Play");
         }
 
+
         // Hotkey Actions
         protected override void WndProc(ref Message m)
         {
@@ -119,5 +161,6 @@ namespace MyAssistant
             base.WndProc(ref m);
         }
 
+        
     }
 }
