@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>programs_6Gf_icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="programs_6Gf_icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Speech" Version="6.0.0" />

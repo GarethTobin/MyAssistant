@@ -106,7 +106,7 @@ namespace MyAssistant
                     speechSynthesizer.Resume();
                 }
                 speechSynthesizer.SpeakAsync(toSpeak);
-                PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Pause");
+                PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Pause") as Image;
             }
             else
             {
@@ -114,12 +114,12 @@ namespace MyAssistant
                 {
                     Puased = true;
                     speechSynthesizer.Pause();
-                    PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Resume");
+                    PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Resume") as Image;
                 } else
                 {
                     Puased = false;
                     speechSynthesizer.Resume();
-                    PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Pause");
+                    PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Pause") as Image;
                 }
             }
         }
@@ -128,19 +128,19 @@ namespace MyAssistant
         {
             Playing = false;
             speechSynthesizer.SpeakAsyncCancelAll();
-            PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Play");
+            PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Play") as Image;
         }
 
         private void Start_SpeakStarted(object? sender, SpeakStartedEventArgs e)
         {
             Playing = true;
-            PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Pause");
+            PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Pause") as Image;
         }
 
         private void completed_SpeakCompleted(object? sender, SpeakCompletedEventArgs e)
         {
             Playing = false;
-            PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Play");
+            PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Play") as Image;
         }
 
 
