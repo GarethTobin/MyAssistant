@@ -39,10 +39,10 @@ namespace MyAssistant
             speechSynthesizer.SetOutputToDefaultAudioDevice();
             speechSynthesizer.SpeakCompleted += completed_SpeakCompleted;
             speechSynthesizer.SpeakStarted += Start_SpeakStarted;
+
         }
 
         // Form Button Functions 
-
         private void PlayAndPuaseButton_Click(object sender, EventArgs e)
         {
             SpeechPlayAndPuase();
@@ -54,23 +54,31 @@ namespace MyAssistant
         }
 
         // Speech Synthesizer
-
         private void SpeechPlayAndPuase()
         {
             if (!Playing)
             {
                 string toSpeak = Clipboard.GetText();
+                if (Puased)
+                {
+                    Puased = false;
+                    speechSynthesizer.Resume();
+                }
                 speechSynthesizer.SpeakAsync(toSpeak);
-            } else
+                PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Pause");
+            }
+            else
             {
                 if (!Puased)
                 {
                     Puased = true;
                     speechSynthesizer.Pause();
+                    PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Resume");
                 } else
                 {
                     Puased = false;
                     speechSynthesizer.Resume();
+                    PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Pause");
                 }
             }
         }
@@ -79,17 +87,21 @@ namespace MyAssistant
         {
             Playing = false;
             speechSynthesizer.SpeakAsyncCancelAll();
+            PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Play");
         }
 
         private void Start_SpeakStarted(object? sender, SpeakStartedEventArgs e)
         {
             Playing = true;
+            PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Pause");
         }
 
         private void completed_SpeakCompleted(object? sender, SpeakCompletedEventArgs e)
         {
             Playing = false;
+            PlayAndPuaseButton.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("Play");
         }
+
         // Hotkey Actions
         protected override void WndProc(ref Message m)
         {
@@ -106,5 +118,6 @@ namespace MyAssistant
 
             base.WndProc(ref m);
         }
+
     }
 }

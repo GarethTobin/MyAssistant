@@ -34,22 +34,30 @@
             // 
             // PlayAndPuaseButton
             // 
-            this.PlayAndPuaseButton.Location = new System.Drawing.Point(12, 12);
+            this.PlayAndPuaseButton.BackColor = System.Drawing.Color.Transparent;
+            this.PlayAndPuaseButton.BackgroundImage = global::MyAssistant.Properties.Resources.Play;
+            this.PlayAndPuaseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.PlayAndPuaseButton.FlatAppearance.BorderSize = 0;
+            this.PlayAndPuaseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PlayAndPuaseButton.Location = new System.Drawing.Point(14, 12);
             this.PlayAndPuaseButton.Name = "PlayAndPuaseButton";
-            this.PlayAndPuaseButton.Size = new System.Drawing.Size(106, 179);
+            this.PlayAndPuaseButton.Size = new System.Drawing.Size(130, 130);
             this.PlayAndPuaseButton.TabIndex = 1;
-            this.PlayAndPuaseButton.Text = "button2";
-            this.PlayAndPuaseButton.UseVisualStyleBackColor = true;
+            this.PlayAndPuaseButton.UseVisualStyleBackColor = false;
             this.PlayAndPuaseButton.Click += new System.EventHandler(this.PlayAndPuaseButton_Click);
             // 
             // StopButton
             // 
-            this.StopButton.Location = new System.Drawing.Point(130, 12);
+            this.StopButton.BackColor = System.Drawing.Color.Transparent;
+            this.StopButton.BackgroundImage = global::MyAssistant.Properties.Resources.Stop;
+            this.StopButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.StopButton.FlatAppearance.BorderSize = 0;
+            this.StopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StopButton.Location = new System.Drawing.Point(169, 12);
             this.StopButton.Name = "StopButton";
-            this.StopButton.Size = new System.Drawing.Size(102, 179);
+            this.StopButton.Size = new System.Drawing.Size(130, 130);
             this.StopButton.TabIndex = 2;
-            this.StopButton.Text = "button1";
-            this.StopButton.UseVisualStyleBackColor = true;
+            this.StopButton.UseVisualStyleBackColor = false;
             this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
             // 
             // MyAssistantForm
@@ -57,7 +65,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(782, 203);
+            this.ClientSize = new System.Drawing.Size(322, 152);
             this.Controls.Add(this.StopButton);
             this.Controls.Add(this.PlayAndPuaseButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
