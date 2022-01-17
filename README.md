@@ -7,8 +7,8 @@ I will update the Plans part when I think of things I am planning to make this p
 The text reader allows you to listen to the text that is in the clipboard. 
 To use it just copy what text you would like to listen to then press play.
 
-**Text to speech Hotkeys:**
-F24 - Play/Puase/Resume
+**Text Reader Hotkeys:**
+F24 - Play/Puase/Resume,
 F23 - Stop
 
 # Plans
