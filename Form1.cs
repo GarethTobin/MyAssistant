@@ -7,21 +7,31 @@ namespace MyAssistant
     {
 
         // DLL libraries used to manage hotkeys
-        [DllImport("user32.dll")]
+        [DllImport("User32.dll")]
         public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
-        [DllImport("user32.dll")]
+        [DllImport("User32.dll")]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
+        [DllImport("User32.dll")]
+        public static extern bool ReleaseCapture();
+        [DllImport("User32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HTCAPTION = 0x2;
 
         // Hotkey IDs
         const int PLAY_HOTKEY_ID = 111;
         const int STOP_HOTKEY_ID = 112;
 
-
         SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer();
 
+        // Bools for the Speech Synthesizer 
         bool Playing = false;
         bool Puased = false;
+        bool Hovering = false;
+
 
         public MyAssistantForm()
         {
@@ -30,6 +40,7 @@ namespace MyAssistant
 
         private void MyAssistantForm_Load(object sender, EventArgs e)
         {
+
             // Modifier keys codes: Alt = 1, Ctrl = 2, Shift = 4, Win = 8
             // Compute the addition of each combination of the keys you want to be pressed
             // ALT+CTRL = 1 + 2 = 3 , CTRL+SHIFT = 2 + 4 = 6...
@@ -39,6 +50,7 @@ namespace MyAssistant
             speechSynthesizer.SetOutputToDefaultAudioDevice();
             speechSynthesizer.SpeakCompleted += completed_SpeakCompleted;
             speechSynthesizer.SpeakStarted += Start_SpeakStarted;
+
 
             notifyIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
             notifyIcon.ContextMenuStrip.Items.Add("Close", null, OnCloseClick);
@@ -106,7 +118,7 @@ namespace MyAssistant
                     speechSynthesizer.Resume();
                 }
                 speechSynthesizer.SpeakAsync(toSpeak);
-                PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Pause") as Image;
+                PlayAndPuaseImage();
             }
             else
             {
@@ -114,12 +126,12 @@ namespace MyAssistant
                 {
                     Puased = true;
                     speechSynthesizer.Pause();
-                    PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Resume") as Image;
+                    PlayAndPuaseImage();
                 } else
                 {
                     Puased = false;
                     speechSynthesizer.Resume();
-                    PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Pause") as Image;
+                    PlayAndPuaseImage();
                 }
             }
         }
@@ -128,19 +140,19 @@ namespace MyAssistant
         {
             Playing = false;
             speechSynthesizer.SpeakAsyncCancelAll();
-            PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Play") as Image;
+            PlayAndPuaseButton.Image = Properties.Resources.ResourceManager.GetObject("PlayButton") as Image;
         }
 
         private void Start_SpeakStarted(object? sender, SpeakStartedEventArgs e)
         {
             Playing = true;
-            PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Pause") as Image;
+            PlayAndPuaseImage();
         }
 
         private void completed_SpeakCompleted(object? sender, SpeakCompletedEventArgs e)
         {
             Playing = false;
-            PlayAndPuaseButton.BackgroundImage = Properties.Resources.ResourceManager.GetObject("Play") as Image;
+            PlayAndPuaseButton.Image = Properties.Resources.ResourceManager.GetObject("PlayButton") as Image;
         }
 
 
@@ -161,6 +173,93 @@ namespace MyAssistant
             base.WndProc(ref m);
         }
 
-        
+        private void MyAssistantForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+            }
+        }
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void minButton_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+
+        // Hover event for PlayAndPuaseButton
+        private void PlayAndPuaseButton_MouseEnter(object sender, EventArgs e)
+        {
+            Hovering = true;
+            PlayAndPuaseImage();
+        }
+        private void PlayAndPuaseButton_MouseLeave(object sender, EventArgs e)
+        {
+            Hovering = false;
+            PlayAndPuaseImage();
+        }
+
+        // Hover event for StopButton
+        private void StopButton_MouseEnter(object sender, EventArgs e)
+        {
+            StopButton.Image = Properties.Resources.ResourceManager.GetObject("StopButtonHover") as Image;
+        }
+        private void StopButton_MouseLeave(object sender, EventArgs e)
+        {
+            StopButton.Image = Properties.Resources.ResourceManager.GetObject("StopButton") as Image;
+        }
+
+        // Hover event for closeButton
+        private void closeButton_MouseEnter(object sender, EventArgs e)
+        {
+            closeButton.Image = Properties.Resources.ResourceManager.GetObject("CloseButtonHover") as Image;
+        }
+        private void closeButton_MouseLeave(object sender, EventArgs e)
+        {
+            closeButton.Image = Properties.Resources.ResourceManager.GetObject("CloseButton") as Image;
+        }
+
+        // Hover event for minButton
+        private void minButton_MouseEnter(object sender, EventArgs e)
+        {
+            minButton.Image = Properties.Resources.ResourceManager.GetObject("MinButtonHover") as Image;
+        }
+        private void minButton_MouseLeave(object sender, EventArgs e)
+        {
+            minButton.Image = Properties.Resources.ResourceManager.GetObject("MinButton") as Image;
+        }
+
+        // PlayAndPuaseButton Hover change depending on the bools for Speech Synthesizer
+        private void PlayAndPuaseImage()
+        {
+
+            if (Hovering)
+            {
+                if (!Playing) PlayAndPuaseButton.Image = Properties.Resources.ResourceManager.GetObject("PlayButtonHover") as Image;
+                else
+                {
+                    if (!Puased) PlayAndPuaseButton.Image = Properties.Resources.ResourceManager.GetObject("PuaseButtonHover") as Image;
+                    else PlayAndPuaseButton.Image = Properties.Resources.ResourceManager.GetObject("ResumeButtonHover") as Image;
+                }
+
+            }
+            else
+            {
+                if (!Playing) PlayAndPuaseButton.Image = Properties.Resources.ResourceManager.GetObject("PlayButton") as Image;
+                else
+                {
+                    if (!Puased) PlayAndPuaseButton.Image = Properties.Resources.ResourceManager.GetObject("PuaseButton") as Image;
+                    else PlayAndPuaseButton.Image = Properties.Resources.ResourceManager.GetObject("ResumeButton") as Image;
+
+                }
+
+            }
+        }
     }
 }

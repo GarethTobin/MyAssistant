@@ -1,5 +1,5 @@
 ﻿# Info
-**Description**<br>
+**Description:**<br>
 This project was created in Visual Studio 2022 and I do not have many plans for it at the moment but one. 
 I will update the Plans part when I think of things I am planning to make this project do.
 
@@ -10,7 +10,7 @@ When the program is minimized it will hide it self from the taskbar and show its
 Double click it in the System Tray will open it, or right click it to open the option menu to open or close it.
 
 **Text Reader Hotkeys:**<br>
-F24 - Play/Puase/Resume,<br>
+F24 - Play/Puase/Resume<br>
 F23 - Stop
 
 # Plans
